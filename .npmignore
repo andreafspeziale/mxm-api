@@ -1,0 +1,7 @@
+.husky
+.tap
+.nvmrc
+biome.json
+andreafspeziale-*
+tsconfig.build.json
+tsconfig.json
