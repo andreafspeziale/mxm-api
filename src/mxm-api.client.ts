@@ -4,28 +4,28 @@ import {
   type MatcherLyricsGetPayload,
   type MxmAPIMatcherLyricsGetResponse,
   matcherLyricsGet,
-} from './endpoints/matcher.lyrics.get';
+} from './endpoints/matcher.lyrics.get/index.js';
 import {
   type MatcherSubtitleGetPayload,
   type MxmAPIMatcherSubtitleGetResponse,
   matcherSubtitleGet,
-} from './endpoints/matcher.subtitle.get';
+} from './endpoints/matcher.subtitle.get/index.js';
 import {
   type MatcherTrackGetPayload,
   type MxmAPIMatcherTrackGetResponse,
   matcherTrackGet,
-} from './endpoints/matcher.track.get';
+} from './endpoints/matcher.track.get/index.js';
 import {
   type MxmAPITrackGetResponse,
   type TrackGetGetPayload,
   trackGet,
-} from './endpoints/track.get';
-import { MUSIXMATCH_BASE_URL } from './mxm-api.constants';
+} from './endpoints/track.get/index.js';
+import { MUSIXMATCH_BASE_URL } from './mxm-api.constants.js';
 import type {
   EndpointPayload,
   MxmAPIConfig,
   MxmAPIResponse,
-} from './mxm-api.interfaces';
+} from './mxm-api.interfaces.js';
 
 export class MxmAPI {
   private readonly client: Client;

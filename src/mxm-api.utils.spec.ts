@@ -2,14 +2,14 @@ import { pino } from 'pino';
 import t from 'tap';
 import { MockAgent, setGlobalDispatcher } from 'undici';
 import { z } from 'zod';
-import { MxmAPIError } from './mxm-api.error';
+import { MxmAPIError } from './mxm-api.error.js';
 import {
   buildHeaders,
   buildUrl,
   handleRequest,
   handleResponse,
   throwAPIError,
-} from './mxm-api.utils';
+} from './mxm-api.utils.js';
 
 const url = 'http://some-fake-url.example.com';
 const mockAgent = new MockAgent();

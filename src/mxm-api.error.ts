@@ -1,4 +1,4 @@
-import type { APIErrorDetails } from './mxm-api.interfaces';
+import type { APIErrorDetails } from './mxm-api.interfaces.js';
 
 class APIError extends Error {
   details: Omit<APIErrorDetails, 'cause'>;

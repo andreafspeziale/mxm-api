@@ -1,26 +1,26 @@
-import {
-  type EndpointPayload,
-  MxmAPIError,
-  type MxmAPIResponse,
-} from '../../.';
+import { MxmAPIError } from '../../mxm-api.error.js';
+import type {
+  EndpointPayload,
+  MxmAPIResponse,
+} from '../../mxm-api.interfaces.js';
 import {
   apiKeySchema,
   buildLegacyAPIResponseSchema,
   successStatusCodeSchema,
-} from '../../mxm-api.schemas';
+} from '../../mxm-api.schemas.js';
 import {
   buildHeaders,
   buildUrl,
   handleRequest,
   handleResponse,
   throwAPIError,
-} from '../../mxm-api.utils';
-import { MATCHER_LYRICS_GET_ENDPOINT } from './constants';
+} from '../../mxm-api.utils.js';
+import { MATCHER_LYRICS_GET_ENDPOINT } from './constants.js';
 import type {
   MatcherLyricsGetPayload,
   MxmAPIMatcherLyricsGetResponse,
-} from './interfaces';
-import { mxmAPIMatcherLyricsGetResponseSchema } from './schema';
+} from './interfaces.js';
+import { mxmAPIMatcherLyricsGetResponseSchema } from './schema.js';
 
 export const matcherLyricsGet = async ({
   payload: { apiKey, ...rest },
@@ -48,7 +48,7 @@ export const matcherLyricsGet = async ({
     method,
     path: endpoint,
     headers: buildHeaders(
-      await apiKeySchema.parseAsync(apiKey).catch((error) =>
+      await apiKeySchema.parseAsync(apiKey).catch((error: unknown) =>
         throwAPIError({
           message: 'API key is required',
           details: {

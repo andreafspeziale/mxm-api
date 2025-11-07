@@ -1,5 +1,5 @@
 import type { z } from 'zod';
-import type { mxmAPIMatcherLyricsGetResponseSchema } from './schema';
+import type { mxmAPIMatcherLyricsGetResponseSchema } from './schema.js';
 
 export type MatcherLyricsGetPayload =
   | {

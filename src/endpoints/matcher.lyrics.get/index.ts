@@ -1,3 +1,3 @@
-export * from './handler';
-export * from './interfaces';
-export * from './schema';
+export * from './handler.js';
+export * from './interfaces.js';
+export * from './schema.js';

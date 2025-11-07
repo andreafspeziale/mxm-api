@@ -1,6 +1,6 @@
 import type { Logger, LoggerOptions } from 'pino';
 import type { Client, Interceptable } from 'undici';
-import type { UndiciHeaders } from 'undici/types/dispatcher';
+import type { UndiciHeaders } from 'undici/types/dispatcher.js';
 
 export type AllowedHTTPMethods = 'GET' | 'POST';
 

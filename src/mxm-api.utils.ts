@@ -1,12 +1,12 @@
 import type { Logger } from 'pino';
 import type { z } from 'zod';
-import type { MxmAPIError } from './mxm-api.error';
+import type { MxmAPIError } from './mxm-api.error.js';
 import type {
   AllowedHTTPMethods,
   APIErrorDetails,
   Request,
   Response,
-} from './mxm-api.interfaces';
+} from './mxm-api.interfaces.js';
 
 export const buildUrl = (
   endpoint: string,
@@ -82,7 +82,7 @@ export const handleRequest = async <B>({
       ...(headers ? { headers } : {}),
       ...(body ? { body: JSON.stringify(body) } : {}),
     })
-    .catch((error) =>
+    .catch((error: unknown) =>
       throwAPIError({
         message: 'Something went wrong during the request',
         details: {
@@ -99,7 +99,7 @@ export const handleRequest = async <B>({
 
   return {
     statusCode,
-    data: await request.body.json().catch((error) =>
+    data: await request.body.json().catch((error: unknown) =>
       throwAPIError({
         message: 'Something went wrong during body.json',
         details: {
@@ -145,7 +145,7 @@ export const handleResponse = async <T, R>({
     'Handling response...',
   );
 
-  await statusCodeSchema.parseAsync(statusCode).catch((error) =>
+  await statusCodeSchema.parseAsync(statusCode).catch((error: unknown) =>
     throwAPIError({
       message: `Unexpected statusCode, received ${statusCode}`,
       details: {
@@ -159,7 +159,7 @@ export const handleResponse = async <T, R>({
     }),
   );
 
-  return await dataSchema.parseAsync(data).catch((error) =>
+  return await dataSchema.parseAsync(data).catch((error: unknown) =>
     throwAPIError({
       message: 'Unexpected response data shape',
       details: {

@@ -4,9 +4,5 @@
     "@tsconfig/recommended/tsconfig.json",
     "@tsconfig/node24/tsconfig.json"
   ],
-  "include": ["src"],
-  "compilerOptions": {
-    "declaration": true,
-    "outDir": "dist"
-  }
+  "include": ["src"]
 }

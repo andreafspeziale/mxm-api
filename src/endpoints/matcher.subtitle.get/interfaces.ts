@@ -1,5 +1,5 @@
 import type { z } from 'zod';
-import type { mxmAPIMatcherSubtitleGetResponseSchema } from './schema';
+import type { mxmAPIMatcherSubtitleGetResponseSchema } from './schema.js';
 
 export type MatcherSubtitleGetPayload =
   | {

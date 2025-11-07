@@ -1,23 +1,26 @@
-import {
-  type EndpointPayload,
-  MxmAPIError,
-  type MxmAPIResponse,
-} from '../../.';
+import { MxmAPIError } from '../../mxm-api.error.js';
+import type {
+  EndpointPayload,
+  MxmAPIResponse,
+} from '../../mxm-api.interfaces.js';
 import {
   apiKeySchema,
   buildLegacyAPIResponseSchema,
   successStatusCodeSchema,
-} from '../../mxm-api.schemas';
+} from '../../mxm-api.schemas.js';
 import {
   buildHeaders,
   buildUrl,
   handleRequest,
   handleResponse,
   throwAPIError,
-} from '../../mxm-api.utils';
-import { TRACK_GET_ENDPOINT } from './constants';
-import type { MxmAPITrackGetResponse, TrackGetGetPayload } from './interfaces';
-import { mxmAPITrackGetResponseSchema } from './schema';
+} from '../../mxm-api.utils.js';
+import { TRACK_GET_ENDPOINT } from './constants.js';
+import type {
+  MxmAPITrackGetResponse,
+  TrackGetGetPayload,
+} from './interfaces.js';
+import { mxmAPITrackGetResponseSchema } from './schema.js';
 
 export const trackGet = async ({
   payload: { apiKey, ...rest },
@@ -45,7 +48,7 @@ export const trackGet = async ({
     method,
     path: endpoint,
     headers: buildHeaders(
-      await apiKeySchema.parseAsync(apiKey).catch((error) =>
+      await apiKeySchema.parseAsync(apiKey).catch((error: unknown) =>
         throwAPIError({
           message: 'API key is required',
           details: {

@@ -1,26 +1,26 @@
-import {
-  type EndpointPayload,
-  MxmAPIError,
-  type MxmAPIResponse,
-} from '../../.';
+import { MxmAPIError } from '../../mxm-api.error.js';
+import type {
+  EndpointPayload,
+  MxmAPIResponse,
+} from '../../mxm-api.interfaces.js';
 import {
   apiKeySchema,
   buildLegacyAPIResponseSchema,
   successStatusCodeSchema,
-} from '../../mxm-api.schemas';
+} from '../../mxm-api.schemas.js';
 import {
   buildHeaders,
   buildUrl,
   handleRequest,
   handleResponse,
   throwAPIError,
-} from '../../mxm-api.utils';
-import { MATCHER_SUBTITLE_GET_ENDPOINT } from './constants';
+} from '../../mxm-api.utils.js';
+import { MATCHER_SUBTITLE_GET_ENDPOINT } from './constants.js';
 import type {
   MatcherSubtitleGetPayload,
   MxmAPIMatcherSubtitleGetResponse,
-} from './interfaces';
-import { mxmAPIMatcherSubtitleGetResponseSchema } from './schema';
+} from './interfaces.js';
+import { mxmAPIMatcherSubtitleGetResponseSchema } from './schema.js';
 
 export const matcherSubtitleGet = async ({
   payload: { apiKey, ...rest },
@@ -48,7 +48,7 @@ export const matcherSubtitleGet = async ({
     method,
     path: endpoint,
     headers: buildHeaders(
-      await apiKeySchema.parseAsync(apiKey).catch((error) =>
+      await apiKeySchema.parseAsync(apiKey).catch((error: unknown) =>
         throwAPIError({
           message: 'API key is required',
           details: {

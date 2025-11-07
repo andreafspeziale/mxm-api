@@ -1,8 +1,8 @@
 import t from 'tap';
 import { MockAgent, setGlobalDispatcher } from 'undici';
-import { buildUrl } from '../../mxm-api.utils';
-import { MATCHER_LYRICS_GET_ENDPOINT } from './constants';
-import { matcherLyricsGet } from './handler';
+import { buildUrl } from '../../mxm-api.utils.js';
+import { MATCHER_LYRICS_GET_ENDPOINT } from './constants.js';
+import { matcherLyricsGet } from './handler.js';
 
 const url = 'http://some-fake-url.example.com';
 const mockAgent = new MockAgent();

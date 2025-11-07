@@ -1,6 +1,6 @@
 import { type Logger, pino } from 'pino';
 import t from 'tap';
-import { MxmAPI } from './mxm-api.client';
+import { MxmAPI } from './mxm-api.client.js';
 
 t.test('MxmAPI', (t) => {
   t.test('Should instantiate with minimal configuration', async (t) => {

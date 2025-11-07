@@ -1,5 +1,5 @@
 import type { z } from 'zod';
-import type { mxmAPITrackGetResponseSchema } from './schema';
+import type { mxmAPITrackGetResponseSchema } from './schema.js';
 
 export interface TrackGetGetPayload {
   commontrack_id?: string;

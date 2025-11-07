@@ -1,5 +1,5 @@
 import type { z } from 'zod';
-import type { mxmAPIMatcherTrackGetResponseSchema } from './schema';
+import type { mxmAPIMatcherTrackGetResponseSchema } from './schema.js';
 
 export type MatcherTrackGetPayload =
   | {
