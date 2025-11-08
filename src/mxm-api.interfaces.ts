@@ -17,15 +17,25 @@ export interface Response {
   data: unknown;
 }
 
-export interface APIErrorDetails {
-  method: AllowedHTTPMethods;
-  path: string;
-  statusCode?: number;
-  headers?: unknown;
-  body?: unknown;
-  data?: unknown;
-  cause: unknown;
-}
+export type APIErrorDetails =
+  | {
+      method: AllowedHTTPMethods;
+      path: string;
+      statusCode?: number;
+      headers?: unknown;
+      body?: unknown;
+      data?: unknown;
+      cause: unknown;
+    }
+  | {
+      method: AllowedHTTPMethods;
+      endpoint: string;
+      statusCode?: number;
+      headers?: unknown;
+      body?: unknown;
+      data?: unknown;
+      cause: unknown;
+    };
 
 export interface MxmAPIOptionalAPIKey {
   apiKey?: string | undefined;

@@ -20,6 +20,11 @@ import {
   type TrackGetGetPayload,
   trackGet,
 } from './endpoints/track.get/index.js';
+import {
+  type MxmAPITrackLyricsFingerprintPostResponse,
+  type TrackLyricsFingerprintPostPayload,
+  trackLyricsFingerprintPost,
+} from './endpoints/track.lyrics.fingerprint.post/index.js';
 import { MUSIXMATCH_BASE_URL } from './mxm-api.constants.js';
 import type {
   EndpointPayload,
@@ -99,6 +104,17 @@ export class MxmAPI {
   ): Promise<MxmAPIResponse<MxmAPITrackGetResponse>> {
     const { apiKey, ...rest } = payload;
     return trackGet({
+      payload: { apiKey: apiKey || this.config?.apiKey, ...rest },
+      client: this.client,
+      logger: this.logger,
+    });
+  }
+
+  async trackLyricsFingerprintPost(
+    payload: EndpointPayload<TrackLyricsFingerprintPostPayload>['payload'],
+  ): Promise<MxmAPIResponse<MxmAPITrackLyricsFingerprintPostResponse>> {
+    const { apiKey, ...rest } = payload;
+    return trackLyricsFingerprintPost({
       payload: { apiKey: apiKey || this.config?.apiKey, ...rest },
       client: this.client,
       logger: this.logger,

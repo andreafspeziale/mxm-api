@@ -1,7 +1,8 @@
 import t from 'tap';
 import { MockAgent, setGlobalDispatcher } from 'undici';
+import { MxmAPIError } from '../../mxm-api.error.js';
 import { buildUrl } from '../../mxm-api.utils.js';
-import { TRACK_GET_ENDPOINT } from './constants.js';
+import { METHOD, TRACK_GET_ENDPOINT } from './constants.js';
 import { trackGet } from './handler.js';
 
 const url = 'http://some-fake-url.example.com';
@@ -67,21 +68,27 @@ t.test('track.get', (t) => {
       },
     };
 
-    const ISRC = 'THE_ISRC';
-    const endpoint = buildUrl(TRACK_GET_ENDPOINT, { track_isrc: ISRC });
+    const payload = {
+      apiKey: 'fake-api-key',
+      track_isrc: 'USUM71703861',
+    };
+
+    const path = await buildUrl({
+      endpoint: TRACK_GET_ENDPOINT,
+      params: payload,
+      method: METHOD,
+      errorToBeInitialized: MxmAPIError,
+    });
 
     client
       .intercept({
-        path: endpoint,
-        method: 'GET',
+        path,
+        method: METHOD,
       })
       .reply(200, expectedResponse);
 
     const r = await trackGet({
-      payload: {
-        apiKey: 'fake-api-key',
-        track_isrc: ISRC,
-      },
+      payload,
       client,
     });
 
@@ -89,13 +96,13 @@ t.test('track.get', (t) => {
   });
 
   t.test('Should throw when api-key is not provided', async (t) => {
-    const ISRC = 'THE_ISRC';
+    const payload = {
+      track_isrc: 'USUM71703861',
+    };
 
     await t.rejects(
       trackGet({
-        payload: {
-          track_isrc: ISRC,
-        },
+        payload,
         client,
       }),
       {
@@ -107,22 +114,28 @@ t.test('track.get', (t) => {
   t.test('Should throw when unexpected statusCode', async (t) => {
     const statusCode = 500;
 
-    const ISRC = 'THE_ISRC';
-    const endpoint = buildUrl(TRACK_GET_ENDPOINT, { track_isrc: ISRC });
+    const payload = {
+      apiKey: 'fake-api-key',
+      track_isrc: 'USUM71703861',
+    };
+
+    const path = await buildUrl({
+      endpoint: TRACK_GET_ENDPOINT,
+      params: payload,
+      method: METHOD,
+      errorToBeInitialized: MxmAPIError,
+    });
 
     client
       .intercept({
-        path: endpoint,
-        method: 'GET',
+        path,
+        method: METHOD,
       })
       .reply(statusCode, {});
 
     await t.rejects(
       trackGet({
-        payload: {
-          apiKey: 'fake-api-key',
-          track_isrc: ISRC,
-        },
+        payload,
         client,
       }),
       {
@@ -144,22 +157,28 @@ t.test('track.get', (t) => {
         },
       };
 
-      const ISRC = 'THE_ISRC';
-      const endpoint = buildUrl(TRACK_GET_ENDPOINT, { track_isrc: ISRC });
+      const payload = {
+        apiKey: 'fake-api-key',
+        track_isrc: 'USUM71703861',
+      };
+
+      const path = await buildUrl({
+        endpoint: TRACK_GET_ENDPOINT,
+        params: payload,
+        method: METHOD,
+        errorToBeInitialized: MxmAPIError,
+      });
 
       client
         .intercept({
-          path: endpoint,
-          method: 'GET',
+          path,
+          method: METHOD,
         })
         .reply(200, response);
 
       await t.rejects(
         trackGet({
-          payload: {
-            apiKey: 'fake-api-key',
-            track_isrc: ISRC,
-          },
+          payload,
           client,
         }),
         {
@@ -225,22 +244,28 @@ t.test('track.get', (t) => {
         },
       };
 
-      const ISRC = 'THE_ISRC';
-      const endpoint = buildUrl(TRACK_GET_ENDPOINT, { track_isrc: ISRC });
+      const payload = {
+        apiKey: 'fake-api-key',
+        track_isrc: 'USUM71703861',
+      };
+
+      const path = await buildUrl({
+        endpoint: TRACK_GET_ENDPOINT,
+        params: payload,
+        method: METHOD,
+        errorToBeInitialized: MxmAPIError,
+      });
 
       client
         .intercept({
-          path: endpoint,
+          path,
           method: 'GET',
         })
         .reply(200, response);
 
       await t.rejects(
         trackGet({
-          payload: {
-            apiKey: 'fake-api-key',
-            track_isrc: ISRC,
-          },
+          payload,
           client,
         }),
         {
@@ -251,22 +276,28 @@ t.test('track.get', (t) => {
   );
 
   t.test('Should throw for an unexpected error', async (t) => {
-    const ISRC = 'THE_ISRC';
-    const endpoint = buildUrl(TRACK_GET_ENDPOINT, { track_isrc: ISRC });
+    const payload = {
+      apiKey: 'fake-api-key',
+      track_isrc: 'USUM71703861',
+    };
+
+    const path = await buildUrl({
+      endpoint: TRACK_GET_ENDPOINT,
+      params: payload,
+      method: METHOD,
+      errorToBeInitialized: MxmAPIError,
+    });
 
     client
       .intercept({
-        path: endpoint,
-        method: 'GET',
+        path,
+        method: METHOD,
       })
       .replyWithError(new Error('Unexpected error'));
 
     await t.rejects(
       trackGet({
-        payload: {
-          apiKey: 'fake-api-key',
-          track_isrc: ISRC,
-        },
+        payload,
         client,
       }),
       {

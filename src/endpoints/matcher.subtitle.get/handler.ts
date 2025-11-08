@@ -4,18 +4,15 @@ import type {
   MxmAPIResponse,
 } from '../../mxm-api.interfaces.js';
 import {
-  apiKeySchema,
   buildLegacyAPIResponseSchema,
   successStatusCodeSchema,
 } from '../../mxm-api.schemas.js';
 import {
-  buildHeaders,
   buildUrl,
   handleRequest,
   handleResponse,
-  throwAPIError,
 } from '../../mxm-api.utils.js';
-import { MATCHER_SUBTITLE_GET_ENDPOINT } from './constants.js';
+import { MATCHER_SUBTITLE_GET_ENDPOINT, METHOD } from './constants.js';
 import type {
   MatcherSubtitleGetPayload,
   MxmAPIMatcherSubtitleGetResponse,
@@ -23,51 +20,41 @@ import type {
 import { mxmAPIMatcherSubtitleGetResponseSchema } from './schema.js';
 
 export const matcherSubtitleGet = async ({
-  payload: { apiKey, ...rest },
+  payload,
   client,
   logger,
 }: EndpointPayload<MatcherSubtitleGetPayload>): Promise<
   MxmAPIResponse<MxmAPIMatcherSubtitleGetResponse>
 > => {
-  const method = 'GET';
-  const endpoint = buildUrl(MATCHER_SUBTITLE_GET_ENDPOINT, rest);
-
-  logger?.info(
+  logger?.debug(
     {
       fn: matcherSubtitleGet.name,
-      method,
-      endpoint,
-      payload: rest,
-      ...(apiKey ? { apiKey } : {}),
+      method: METHOD,
+      endpoint: MATCHER_SUBTITLE_GET_ENDPOINT,
+      payload,
     },
     'Getting subtitle by matcher...',
   );
 
+  const path = await buildUrl({
+    endpoint: MATCHER_SUBTITLE_GET_ENDPOINT,
+    params: payload,
+    method: METHOD,
+    logger,
+    errorToBeInitialized: MxmAPIError,
+  });
+
   const { statusCode, data } = await handleRequest({
     client: client,
-    method,
-    path: endpoint,
-    headers: buildHeaders(
-      await apiKeySchema.parseAsync(apiKey).catch((error: unknown) =>
-        throwAPIError({
-          message: 'API key is required',
-          details: {
-            method,
-            path: endpoint,
-            cause: error,
-          },
-          logger,
-          errorToBeInitialized: MxmAPIError,
-        }),
-      ),
-    ),
+    method: METHOD,
+    path,
     logger,
     errorToBeInitialized: MxmAPIError,
   });
 
   return handleResponse({
-    method,
-    path: endpoint,
+    method: METHOD,
+    path,
     statusCode,
     data,
     statusCodeSchema: successStatusCodeSchema,

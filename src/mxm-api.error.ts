@@ -8,7 +8,7 @@ class APIError extends Error {
 
     this.name = APIError.name;
     this.details = rest;
-    this.cause = cause;
+    // this.cause = cause; // NOTE: maybe a little bit too much, this would be like the "original error"
   }
 }
 

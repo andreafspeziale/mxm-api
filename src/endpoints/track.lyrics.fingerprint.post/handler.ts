@@ -12,33 +12,35 @@ import {
   handleRequest,
   handleResponse,
 } from '../../mxm-api.utils.js';
-import { METHOD, TRACK_GET_ENDPOINT } from './constants.js';
+import { METHOD, TRACK_LYRICS_FINGERPRINT_POST_ENDPOINT } from './constants.js';
 import type {
-  MxmAPITrackGetResponse,
-  TrackGetGetPayload,
+  MxmAPITrackLyricsFingerprintPostResponse,
+  TrackLyricsFingerprintPostPayload,
 } from './interfaces.js';
-import { mxmAPITrackGetResponseSchema } from './schema.js';
+import { mxmAPITrackLyricsFingerprintPostResponseSchema } from './schema.js';
 
-export const trackGet = async ({
+export const trackLyricsFingerprintPost = async ({
   payload,
   client,
   logger,
-}: EndpointPayload<TrackGetGetPayload>): Promise<
-  MxmAPIResponse<MxmAPITrackGetResponse>
+}: EndpointPayload<TrackLyricsFingerprintPostPayload>): Promise<
+  MxmAPIResponse<MxmAPITrackLyricsFingerprintPostResponse>
 > => {
   logger?.debug(
     {
-      fn: trackGet.name,
+      fn: trackLyricsFingerprintPost.name,
       method: METHOD,
-      endpoint: TRACK_GET_ENDPOINT,
+      endpoint: TRACK_LYRICS_FINGERPRINT_POST_ENDPOINT,
       payload,
     },
-    'Getting track...',
+    'Performing fingerprint by input text...',
   );
 
+  const { text, ...rest } = payload;
+
   const path = await buildUrl({
-    endpoint: TRACK_GET_ENDPOINT,
-    params: payload,
+    endpoint: TRACK_LYRICS_FINGERPRINT_POST_ENDPOINT,
+    params: rest,
     method: METHOD,
     logger,
     errorToBeInitialized: MxmAPIError,
@@ -48,6 +50,7 @@ export const trackGet = async ({
     client: client,
     method: METHOD,
     path,
+    body: { data: { text } },
     logger,
     errorToBeInitialized: MxmAPIError,
   });
@@ -58,7 +61,9 @@ export const trackGet = async ({
     statusCode,
     data,
     statusCodeSchema: successStatusCodeSchema,
-    dataSchema: buildLegacyAPIResponseSchema(mxmAPITrackGetResponseSchema),
+    dataSchema: buildLegacyAPIResponseSchema(
+      mxmAPITrackLyricsFingerprintPostResponseSchema,
+    ),
     logger,
     errorToBeInitialized: MxmAPIError,
   });

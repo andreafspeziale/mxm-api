@@ -6,11 +6,7 @@
     HTTP client SDK showcase using <a href="https://github.com/nodejs/undici" target="blank">Undici</a>,<br>
     <a href="https://github.com/colinhacks/zod" target="blank">Zod</a> and <a href="https://github.com/pinojs/pino" target="blank">Pino</a> logger.
   </p>
-  <!--<p>
-    <a href="https://www.npmjs.com/@andreafspeziale/nestjs-log" target="_blank"><img src="https://img.shields.io/npm/v/@andreafspeziale/nestjs-log" alt="NPM Version" /></a>
-    <a href="https://www.npmjs.com/@andreafspeziale/nestjs-log" target="_blank"><img src="https://img.shields.io/npm/l/@andreafspeziale/nestjs-log.svg" alt="Package License" /></a>
-    <a href="https://github.com/andreafspeziale/nestjs-log/actions" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/andreafspeziale/nestjs-log/test.yml" alt="Test Status"/></a>
-  <p>-->
+  <!-- TODO: add badges -->
 </div>
 
 ## Installation
@@ -38,7 +34,7 @@ pnpm add @andreafspeziale/mxm-api
 > [!NOTE]
 > To effectively interact with the Musixmatch API you need a valid API key.
 
-The SDK implements most of the [Musixmatch API endpoints](https://docs.musixmatch.com/lyrics-api/introduction), providing a strongly typed and easy-to-use interface for developers. It handles authentication, request construction, and response parsing, allowing you to focus on building your application.
+The SDK implements most of the [Musixmatch API endpoints](https://docs.musixmatch.com/lyrics-api/introduction), providing a strongly typed and easy-to-use interface for developers. It handles authentication, request construction and response parsing allowing you to focus on building your application.
 
 ### Zero-config
 
@@ -128,10 +124,11 @@ const track = await mxmAPI.trackGet({
 - `matcherSubtitleGet` ([matcher.subtitle.get](https://docs.musixmatch.com/lyrics-api/matcher/matcher-subtitle-get))
 - `matcherTrackGet` ([matcher.track.get](https://docs.musixmatch.com/lyrics-api/matcher/matcher-track-get))
 - `trackGet` ([track.get](https://docs.musixmatch.com/lyrics-api/track/track-get))
+- `trackLyricsFingerprintPost` ([track.lyrics.fingerprint](https://docs.musixmatch.com/enterprise-integration/api-reference/track-lyrics-fingerprint-post))
 
 ## Test
 
-- `pnpm tap` or `npm run test`
+- `pnpm test`
 
 ## Stay in touch
 

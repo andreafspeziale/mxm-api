@@ -1,40 +1,16 @@
 import type { Logger } from 'pino';
 import type { z } from 'zod';
+import { fromError } from 'zod-validation-error';
+import type { ZodError } from 'zod-validation-error/v3';
 import type { MxmAPIError } from './mxm-api.error.js';
 import type {
   AllowedHTTPMethods,
   APIErrorDetails,
+  MxmAPIOptionalAPIKey,
   Request,
   Response,
 } from './mxm-api.interfaces.js';
-
-export const buildUrl = (
-  endpoint: string,
-  params: Record<string, string | null | undefined>,
-): string => {
-  const queryString = Object.entries(params)
-    .filter((entry): entry is [string, string] => {
-      const [_, value] = entry;
-      return value !== null && value !== undefined && value !== '';
-    })
-    .map(
-      ([key, value]) =>
-        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
-    )
-    .join('&');
-
-  if (!queryString) {
-    return endpoint;
-  }
-
-  const separator = endpoint.includes('?') ? '&' : '?';
-  return `${endpoint}${separator}${queryString}`;
-};
-
-export const buildHeaders = (apiKey: string) => ({
-  'content-type': 'application/json',
-  'x-mxm-token-apikey': apiKey,
-});
+import { apiKeySchema } from './mxm-api.schemas.js';
 
 export const throwAPIError = ({
   message,
@@ -52,6 +28,51 @@ export const throwAPIError = ({
   throw new errorToBeInitialized(message, details);
 };
 
+export const buildUrl = async <T extends MxmAPIOptionalAPIKey>({
+  endpoint,
+  params,
+  method,
+  logger,
+  errorToBeInitialized,
+}: {
+  endpoint: string;
+  params: T;
+  method: AllowedHTTPMethods;
+  logger?: Logger | undefined;
+  errorToBeInitialized: typeof MxmAPIError;
+}): Promise<string> => {
+  await apiKeySchema.parseAsync(params.apiKey).catch((error: ZodError) =>
+    throwAPIError({
+      message: 'API key is required',
+      details: {
+        method,
+        endpoint,
+        cause: fromError(error),
+      },
+      logger,
+      errorToBeInitialized,
+    }),
+  );
+
+  const queryString = Object.entries(params)
+    .filter((entry): entry is [string, string] => {
+      const [_, value] = entry;
+      return value !== null && value !== undefined && value !== '';
+    })
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key === 'apiKey' ? 'apikey' : key)}=${encodeURIComponent(value)}`,
+    )
+    .join('&');
+
+  if (!queryString) {
+    return endpoint;
+  }
+
+  const separator = endpoint.includes('?') ? '&' : '?';
+  return `${endpoint}${separator}${queryString}`;
+};
+
 export const handleRequest = async <B>({
   client,
   method,
@@ -64,12 +85,17 @@ export const handleRequest = async <B>({
   logger?: Logger | undefined;
   errorToBeInitialized: typeof MxmAPIError;
 }): Promise<Response> => {
+  const currentHeaders = {
+    'content-type': 'application/json',
+    ...headers,
+  };
+
   logger?.debug(
     {
       fn: handleRequest.name,
       method,
       path,
-      ...(headers ? { headers } : {}),
+      headers: currentHeaders,
       ...(body ? { body } : {}),
     },
     'Handling request...',
@@ -79,7 +105,7 @@ export const handleRequest = async <B>({
     .request({
       method,
       path,
-      ...(headers ? { headers } : {}),
+      headers: currentHeaders,
       ...(body ? { body: JSON.stringify(body) } : {}),
     })
     .catch((error: unknown) =>
@@ -88,7 +114,7 @@ export const handleRequest = async <B>({
         details: {
           method,
           path,
-          ...(headers ? { headers } : {}),
+          headers: currentHeaders,
           ...(body ? { body } : {}),
           cause: error,
         },
@@ -106,7 +132,7 @@ export const handleRequest = async <B>({
           method,
           path,
           statusCode,
-          ...(headers ? { headers } : {}),
+          headers: currentHeaders,
           ...(body ? { body } : {}),
           cause: error,
         },
@@ -145,21 +171,21 @@ export const handleResponse = async <T, R>({
     'Handling response...',
   );
 
-  await statusCodeSchema.parseAsync(statusCode).catch((error: unknown) =>
+  await statusCodeSchema.parseAsync(statusCode).catch((error: ZodError) =>
     throwAPIError({
       message: `Unexpected statusCode, received ${statusCode}`,
       details: {
         method,
         path,
         statusCode,
-        cause: error,
+        cause: fromError(error),
       },
       logger,
       errorToBeInitialized,
     }),
   );
 
-  return await dataSchema.parseAsync(data).catch((error: unknown) =>
+  return await dataSchema.parseAsync(data).catch((error: ZodError) =>
     throwAPIError({
       message: 'Unexpected response data shape',
       details: {
@@ -167,7 +193,7 @@ export const handleResponse = async <T, R>({
         path,
         statusCode,
         data,
-        cause: error,
+        cause: fromError(error),
       },
       logger,
       errorToBeInitialized,
