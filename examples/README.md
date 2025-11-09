@@ -174,34 +174,26 @@ Here you can find some examples of how to use the package in your project and it
     statusCode: 200
     data: {
         "message": {
-        "header": {
-            "status_code": 200,
-            "execute_time": 0.2284460067749
-        },
-        "body": {
-            "track_list": [
-            {
-                "similarity": 98.648648648649,
-                "track": "[Redacted]"
+            "header": {
+                "status_code": 200,
+                "execute_time": 0.2284460067749
             },
-            {
-                "similarity": 98.648648648649,
-                "track": "[Redacted]"
-            },
-            {
-                "similarity": 97.972972972973,
-                "track": "[Redacted]"
-            },
-            {
-                "similarity": 97.972972972973,
-                "track": "[Redacted]"
-            },
-            {
-                "similarity": 29.054054054054,
-                "track": "[Redacted]"
+            "body": {
+                "track_list": [
+                    {
+                        "similarity": 98.648648648649,
+                        "track": "[Redacted]"
+                    },
+                    {
+                        "similarity": 97.972972972973,
+                        "track": "[Redacted]"
+                    },
+                    {
+                        "similarity": 29.054054054054,
+                        "track": "[Redacted]"
+                    }
+                ]
             }
-            ]
-        }
         }
     }
 ~/Repositories/os/mxm-api/examples →
