@@ -124,8 +124,9 @@ const track = await mxmAPI.trackGet({
 - `matcherSubtitleGet` ([matcher.subtitle.get](https://docs.musixmatch.com/lyrics-api/matcher/matcher-subtitle-get))
 - `matcherTrackGet` ([matcher.track.get](https://docs.musixmatch.com/lyrics-api/matcher/matcher-track-get))
 - `trackGet` ([track.get](https://docs.musixmatch.com/lyrics-api/track/track-get))
-- `trackLyricsFingerprintPost` ([track.lyrics.fingerprint](https://docs.musixmatch.com/enterprise-integration/api-reference/track-lyrics-fingerprint-post))
 - `trackLyricsGet` ([track.lyrics.get](https://docs.musixmatch.com/lyrics-api/track/track-lyrics-get))
+- `trackLyricsMoodGet` ([track.lyrics.mood.get](https://docs.musixmatch.com/lyrics-api/track/track-lyrics-mood-get))
+- `trackLyricsFingerprintPost` ([track.lyrics.fingerprint](https://docs.musixmatch.com/enterprise-integration/api-reference/track-lyrics-fingerprint-post))
 
 ## Test
 
