@@ -13,6 +13,9 @@
   </p>
 </div>
 
+> [!IMPORTANT]
+> Artwork inspired by [ElysiaJS](https://elysiajs.com/).
+
 ## Installation
 
 ### npm
